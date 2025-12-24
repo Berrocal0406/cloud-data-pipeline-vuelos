@@ -1,18 +1,19 @@
-Set-StrictMode -Version Latest
+# run_spark.ps1
 $ErrorActionPreference = "Stop"
 
-# Paths
-$python = (Resolve-Path ".\.venv\Scripts\python.exe").Path
-$tempDir = "C:\spark-temp"
+$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location $root
 
-# Ensure temp dir exists
-New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
-
-# Env for Spark
-$env:PYSPARK_PYTHON = $python
-$env:PYSPARK_DRIVER_PYTHON = $python
+$py = (Resolve-Path ".\.venv\Scripts\python.exe").Path
+$env:PYSPARK_PYTHON = $py
+$env:PYSPARK_DRIVER_PYTHON = $py
 $env:SPARK_LOCAL_IP = "127.0.0.1"
-$env:SPARK_LOCAL_DIRS = $tempDir
 
-# Run your script
-& $python "src\transform\spark_smoke_test.py"
+# opcional: evitar temp en AppData
+$env:SPARK_LOCAL_DIRS = (Resolve-Path ".\spark-temp").Path 2>$null
+if (-not $env:SPARK_LOCAL_DIRS) {
+  New-Item -ItemType Directory -Force ".\spark-temp" | Out-Null
+  $env:SPARK_LOCAL_DIRS = (Resolve-Path ".\spark-temp").Path
+}
+
+.\.venv\Scripts\python.exe -m src.transform.transform_routes
