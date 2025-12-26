@@ -96,6 +96,8 @@ data/raw/routes_raw.csv
 ```
 
 Dataset sugerido: **OpenFlights Routes** (archivo `routes.dat`).
+El dataset raw proviene de OpenFlights, un proyecto público que mantiene información abierta sobre aeropuertos, aerolíneas y rutas aéreas.
+
 - El archivo no trae headers. Se renombra a `routes_raw.csv`.
 ![Raw](docs/images/raw_vuelos.png)
 
