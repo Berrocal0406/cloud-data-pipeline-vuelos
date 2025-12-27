@@ -112,6 +112,15 @@ El dataset raw proviene de OpenFlights, un proyecto público que mantiene inform
 Salida:
 - `data/silver/routes_silver.csv`
 
+En Silver, cada fila representa una ruta individual, algo así como:
+
+airline | source_airport | dest_airport | stops | equipment
+
+En Silver:
+- Quitamos nulos.
+- Arreglamos tipos.
+- Normalizamos valores.
+
 ---
 
 ### 4) Transformación (Silver → Gold) con PySpark
@@ -122,6 +131,17 @@ Salida:
 
 Salida:
 - `data/gold/routes_gold.parquet/` (carpeta Parquet con `part-...` y `_SUCCESS`)
+
+En Gold:
+- Cambiamos la forma del dataset.
+- Cambiamos el nivel de granularidad.
+- Creamos métricas.
+
+Creamos nuevas columnas específicas:
+
+source_airport	| dest_airport |	routes_count	| direct_routes_count |	avg_stops
+
+Buscando eliminar ruido para responder: ¿Cuáles son las rutas más frecuentes y qué tan directas son?
 
 ---
 
